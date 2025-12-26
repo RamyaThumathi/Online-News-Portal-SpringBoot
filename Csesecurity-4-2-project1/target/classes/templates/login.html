@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - News Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+        }
+        .form-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 400px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            text-align: center; transition: transform 0.3s ease;
+        }
+        .form-card:hover { transform: translateY(-10px); }
+        .header i { color: #ffd700; margin-bottom: 15px; font-size: 50px; }
+        .header h2 { color: #fff; margin: 10px 0; }
+        .header p { color: #eee; font-size: 14px; margin-bottom: 30px; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group i { position: absolute; top: 12px; left: 10px; color: #fff; }
+        .input-group input {
+            width: 100%; padding: 12px 12px 12px 40px;
+            border: none; border-radius: 10px; outline: none;
+            background: rgba(255,255,255,0.2); color: #fff; font-size: 14px;
+            transition: background 0.3s ease;
+        }
+        .input-group input::placeholder { color: #eee; }
+        .input-group input:focus { background: rgba(255,255,255,0.3); }
+        .btn {
+            width: 100%; padding: 12px; border: none; border-radius: 12px;
+            background: #ffd700; color: #333; font-weight: 600; font-size: 16px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn:hover { background: #ffcc00; }
+        .footer-text { margin-top: 20px; color: #eee; font-size: 14px; }
+        .footer-text a { color: #ffd700; text-decoration: none; font-weight: 500; }
+        .footer-text a:hover { text-decoration: underline; }
+        .message { padding: 10px; margin-bottom: 15px; border-radius: 8px; font-size: 14px; }
+        .error-message { background: #dc3545; color: #fff; }
+        .success-message { background: #28a745; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <div class="header">
+            <i class="fa-solid fa-user-shield"></i>
+            <h2>Admin Login</h2>
+            <p>Enter your credentials to access the portal</p>
+        </div>
+
+        <!-- Display messages from controller -->
+        <div th:if="${errorMessage}" class="message error-message" th:text="${errorMessage}"></div>
+        <div th:if="${successMessage}" class="message success-message" th:text="${successMessage}"></div>
+        
+        <!-- Login error message passed by Spring Security after failed attempt -->
+        <div th:if="${param.error}" class="message error-message">Invalid username or password.</div>
+
+        <!-- Form action links to /perform_login as configured in SecurityConfig -->
+        <form th:action="@{/perform_login}" method="post">
+            <div class="input-group">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+
+            <div class="footer-text">
+                <p>New here? <a th:href="@{/admin/register}">Admin Register</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

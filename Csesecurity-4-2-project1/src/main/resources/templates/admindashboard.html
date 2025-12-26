@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <!-- FIX 1: Use proper link tags for external resources for better loading reliability -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <style>
+        /* Removed @import url(...) as it's now in a link tag */
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        /* FIX 2: Ensure the dashboard title uses the security context */
+        header h1 span {
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        nav a {
+            color: #fff;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav a.logout-btn {
+            color: #ff5555;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            width: 250px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .card button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #ffd700;
+            color: #333;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .card button:hover {
+            background: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>
+        <i class="fa-solid fa-user-shield"></i> 
+        Admin Dashboard 
+        <!-- Display the logged-in username for confirmation -->
+        <span sec:authentication="name" style="font-weight: normal;"></span>
+    </h1>
+    <nav>
+        <a href="#">View News</a>
+        <a href="#">View Reporters</a>
+        <a href="#">Approved News</a>
+        <a href="#">Rejected News</a>
+        <!-- Ensure correct Thymeleaf attribute prefix is used for the logout link -->
+        <a th:href="@{/logout}" class="logout-btn">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <div class="cards">
+        <div class="card">
+            <h3>View All News</h3>
+            <p>Review and approve/reject news submitted by reporters.</p>
+            <!-- FIX 3: Use a custom modal or message box instead of alert() -->
+            <button onclick="console.log('View All News clicked'); this.innerText = 'Coming Soon';">Go</button>
+        </div>
+        <div class="card">
+            <h3>View Reporters</h3>
+            <p>See all registered reporters and their profiles.</p>
+            <button onclick="console.log('View Reporters clicked'); this.innerText = 'Coming Soon';">Go</button>
+        </div>
+        <div class="card">
+            <h3>Approved News</h3>
+            <p>View all approved and published news articles.</p>
+            <button onclick="console.log('Approved News clicked'); this.innerText = 'Coming Soon';">Go</button>
+        </div>
+        <div class="card">
+            <h3>Rejected News</h3>
+            <p>See news that has been rejected for corrections.</p>
+            <button onclick="console.log('Rejected News clicked'); this.innerText = 'Coming Soon';">Go</button>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Animation code remains the same
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+            card.style.opacity = 0;
+            card.style.transform = "translateY(30px)";
+            setTimeout(() => {
+                card.style.transition = "opacity 0.8s ease, transform 0.5s ease";
+                card.style.opacity = 1;
+                card.style.transform = "translateY(0)";
+            }, index * 150);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Reporter Registration</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+  <style>
+    body {
+        margin: 0; padding: 0;
+        font-family: 'Poppins', sans-serif;
+        /* Green/Teal Gradient for Reporter Theme */
+        background: linear-gradient(135deg, #11998e, #38ef7d); 
+        height: 100vh; display: flex; justify-content: center; align-items: center;
+    }
+    .form-card {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        padding: 50px 40px;
+        width: 400px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        text-align: center; transition: transform 0.3s ease;
+    }
+    .form-card:hover { transform: translateY(-5px); }
+    .header i { color: #f6d21f; margin-bottom: 15px; font-size: 50px; }
+    .header h2 { color: #fff; margin: 10px 0; }
+    .header p { color: #eee; font-size: 14px; margin-bottom: 30px; }
+    
+    .input-group { position: relative; margin-bottom: 20px; }
+    .input-group i { position: absolute; top: 12px; left: 10px; color: #fff; }
+    .input-group input, .input-group .file-label {
+        width: 100%; padding: 12px 12px 12px 40px;
+        border: none; border-radius: 10px; outline: none;
+        background: rgba(255,255,255,0.2); color: #fff; font-size: 14px;
+        transition: background 0.3s ease; box-sizing: border-box;
+    }
+    .input-group input[type="file"] { padding: 10px; }
+    .input-group input::placeholder { color: #eee; }
+    .input-group input:focus { background: rgba(255,255,255,0.3); }
+    
+    .btn {
+        width: 100%; padding: 12px; border: none; border-radius: 12px;
+        background: #f6d21f; /* Accent color */
+        color: #333; font-weight: 600; font-size: 16px;
+        cursor: pointer; transition: 0.3s;
+    }
+    .btn:hover { background: #e0be19; }
+    
+    .footer-text { margin-top: 20px; color: #eee; font-size: 14px; }
+    .footer-text a { color: #f6d21f; text-decoration: none; font-weight: 500; }
+    .footer-text a:hover { text-decoration: underline; }
+
+    .message { padding: 10px; margin-bottom: 15px; border-radius: 8px; font-size: 14px; text-align: left; }
+    .error-message { background: #dc3545; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="form-card">
+    <div class="header">
+        <i class="fa-solid fa-user-plus"></i>
+        <h2>Reporter Registration</h2>
+        <p>Join our team to submit news articles</p>
+    </div>
+
+    <div th:if="${error}" class="message error-message" th:text="${error}"></div>
+    <div th:if="${errorMessage}" class="message error-message" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/reporter/save}" th:object="${reporter}" method="post" enctype="multipart/form-data">
+        <div class="input-group">
+            <i class="fa-solid fa-signature"></i>
+            <input type="text" th:field="*{name}" placeholder="Full Name" required>
+        </div>
+        <div class="input-group">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" th:field="*{username}" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" th:field="*{password}" placeholder="Password" required>
+        </div>
+        <div class="input-group">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" th:field="*{email}" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+            <i class="fa-solid fa-phone"></i>
+            <input type="text" th:field="*{mobile}" placeholder="Mobile">
+        </div>
+        <div class="input-group" style="padding-left: 0px; text-align: left;">
+            <label for="file" style="color: #eee; font-size: 14px; display: block; margin-bottom: 5px;">Profile Image (Optional)</label>
+            <input type="file" name="file" id="file" accept="image/*" class="file-label">
+        </div>
+        
+        <button type="submit" class="btn">Register</button>
+    </form>
+    
+    <div class="footer-text">
+        <p>Already registered? <a th:href="@{/reporter/login}">Login here</a></p>
+    </div>
+  </div>
+</body>
+</html>

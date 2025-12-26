@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Upload News</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+  <style>
+    body {
+      background: linear-gradient(135deg, #007991, #78ffd6); /* Light Blue/Green Gradient */
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* Align to top for better scrolling */
+      min-height: 100vh;
+      padding: 40px 0;
+    }
+    .container {
+      background: #fff;
+      width: 700px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    h2 { text-align: center; color: #007991; margin-bottom: 30px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-weight: 500; color: #333; margin-bottom: 5px; }
+    
+    input[type=text], textarea, input[type=file] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    textarea { resize: vertical; }
+
+    .tag-group { display: flex; gap: 15px; }
+    .tag-group input { width: 50%; }
+
+    .image-upload-group { 
+        padding: 15px; 
+        border: 2px dashed #007991; 
+        border-radius: 10px; 
+        margin-top: 15px; 
+    }
+    .image-upload-group input[type="file"] { 
+        border: none; 
+        padding: 5px 0; 
+        cursor: pointer;
+    }
+
+    button {
+      background: #007991;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 25px;
+      transition: background 0.3s;
+    }
+    button:hover { background: #005f77; }
+    
+    .preview { display: flex; justify-content: space-around; margin-top: 15px; }
+    .preview img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 2px solid #ddd;
+    }
+    .preview-label { font-size: 12px; color: #666; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2><i class="fa-solid fa-bullhorn"></i> Upload New Article</h2>
+    <form th:action="@{/reporter/uploadNews}" th:object="${news}" method="post" enctype="multipart/form-data">
+        
+      <div class="form-group">
+        <label for="headline">Headline</label>
+        <input type="text" th:field="*{headline}" id="headline" required placeholder="Catchy title for the news story">
+      </div>
+
+      <div class="form-group">
+        <label>Tags (Categorization)</label>
+        <div class="tag-group">
+            <input type="text" th:field="*{newstag1}" placeholder="Primary Tag (e.g., Politics)">
+            <input type="text" th:field="*{newstag2}" placeholder="Secondary Tag (e.g., Local)">
+        </div>
+      </div>
+
+      <div class="tag-group">
+          <div class="form-group" style="flex: 1;">
+            <label>Event Date</label>
+            <input type="text" th:field="*{dateHeld}" placeholder="YYYY-MM-DD">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Time</label>
+            <input type="text" th:field="*{timeHeld}" placeholder="HH:MM AM/PM">
+          </div>
+      </div>
+      
+      <div class="tag-group">
+          <div class="form-group" style="flex: 1;">
+            <label>Place/Location</label>
+            <input type="text" th:field="*{place}">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>News Type</label>
+            <input type="text" th:field="*{newsType}" placeholder="Sports, Crime, etc.">
+          </div>
+      </div>
+
+      <div class="form-group">
+        <label>News Details</label>
+        <textarea th:field="*{newsDetails}" rows="6" placeholder="Write the full body of the news article here..."></textarea>
+      </div>
+
+      <div class="image-upload-group">
+        <label style="color: #007991; font-weight: 600;">Upload Supporting Images (Max 3)</label>
+        <input type="file" name="image1" accept="image/*" onchange="previewImage(event,1)">
+        <input type="file" name="image2" accept="image/*" onchange="previewImage(event,2)">
+        <input type="file" name="image3" accept="image/*" onchange="previewImage(event,3)">
+      </div>
+      
+      <div class="preview">
+        <div><img id="img1" src=""><div class="preview-label">Image 1</div></div>
+        <div><img id="img2" src=""><div class="preview-label">Image 2</div></div>
+        <div><img id="img3" src=""><div class="preview-label">Image 3</div></div>
+      </div>
+
+      <button type="submit">Submit for Approval</button>
+    </form>
+  </div>
+
+  <script>
+    function previewImage(event, index) {
+      const imgElement = document.getElementById('img' + index);
+      if (event.target.files && event.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function() {
+          imgElement.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+      } else {
+        imgElement.src = ""; // Clear image if file is removed
+      }
+    }
+  </script>
+</body>
+</html>

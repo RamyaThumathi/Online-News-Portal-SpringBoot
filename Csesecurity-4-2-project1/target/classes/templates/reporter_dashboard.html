@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporter Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #11998e, #38ef7d); /* Reporter Theme Gradient */
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        nav a {
+            color: #fff;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav a.logout-btn {
+            color: #f6d21f; /* Accent color for highlight */
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .welcome-banner {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .welcome-banner h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            width: 250px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #f6d21f;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .card a, .card button {
+            display: inline-block;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #f6d21f;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .card a:hover, .card button:hover {
+            background: #e0be19;
+        }
+        
+        .card .metric {
+            font-size: 36px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1><i class="fa-solid fa-microphone"></i> Reporter Portal</h1>
+    <nav>
+        <a th:href="@{/reporter/uploadNews}">Upload News</a>
+        <a href="#">My Submissions</a>
+        <a th:href="@{/logout}" class="logout-btn">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <div class="welcome-banner">
+        <!-- Displays the logged-in username -->
+        <h2>Welcome back, <span sec:authentication="name" style="color: #f6d21f;">Reporter</span>!</h2>
+        <!-- Displays the user's highest authority -->
+        <p>Your Role: <span sec:authentication="principal.authorities[0].authority" style="font-weight: bold;"></span></p>
+    </div>
+    
+    <!-- Success/Error Messages passed via RedirectAttributes -->
+    <div th:if="${successMessage}" style="background: #d4edda; color: #155724; padding: 10px; border-radius: 8px; margin-bottom: 20px; width: 100%; max-width: 600px;" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 8px; margin-bottom: 20px; width: 100%; max-width: 600px;" th:text="${errorMessage}"></div>
+
+
+    <div class="cards">
+        
+        <div class="card">
+            <h3>New Article</h3>
+            <p>Start drafting and submitting a new news article.</p>
+            <a th:href="@{/reporter/uploadNews}">Upload News</a>
+        </div>
+
+        <div class="card">
+            <h3>Pending News</h3>
+            <div class="metric">0</div>
+            <p>Articles awaiting approval from administration.</p>
+            <button onclick="console.log('Pending clicked'); this.innerText = 'Coming Soon';">View Details</button>
+        </div>
+
+        <div class="card">
+            <h3>Approved News</h3>
+            <div class="metric">0</div>
+            <p>Articles that have been approved and published.</p>
+            <button onclick="console.log('Approved clicked'); this.innerText = 'Coming Soon';">View Details</button>
+        </div>
+    </div>
+</main>
+</body>
+</html>
